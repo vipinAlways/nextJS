@@ -6,7 +6,7 @@ import usermodel from "@/Models/User.model";
 
 
 export const authOptions: NextAuthOptions = {
-  providers: [//ye sabh kcuhh providers main vapis ja rha hain 
+  providers: [
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
           type: "text",
           placeholder: "Enter your email",
         },
-        password: { label: "Password", type: "password" }, //bts ek form banega humare liye
+        password: { label: "Password", type: "password" }, 
       },
       async authorize(credentials: any): Promise<any> {
         await dbConnect();
@@ -49,7 +49,32 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks:{
+    async jwt({token,user}){
+     if (user) {
+      token._id =user._id?.toString()
+      token.isVerified=user.isVerified
+      token.isAcceptingMessages=user.isAcceptingMessages
+      token.userName=user.userName
+     }
+     return token
+    },
+    async session({session,token}){
+      if (token) {
+        session.user.userName=token.userName
+        session.user._id=token._id
+        session.user.isAcceptingMessages=token.isAcceptingMessages
+        session.user.isVerified=token.isVerified
+      }
+      return session
+    }
+  },
   pages:{
-    signIn:"/sign_in"
-  }
+    signIn:"/sign-in"
+  },
+  session:{
+    strategy:"jwt"
+  },
+  secret:process.env.NEXT_AUTH_SECRET
+
 };
