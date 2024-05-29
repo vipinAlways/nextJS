@@ -69,8 +69,8 @@ const page = () => {
     try {
       const response = await axios.post<ApiResponse>("/api/sign-up", data);
       toast({
-        title: "Scheduled: Catch up",
-        description: "Friday, February 10, 2023 at 5:57 PM",
+        title: "Success",
+        description: response.data.message,
       });
       router.replace(`/verify/${userName}`);
       setisSubmiting(false);
