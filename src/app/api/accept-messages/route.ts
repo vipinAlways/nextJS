@@ -4,6 +4,7 @@ import usermodel from "@/Models/User.model";
 import dbConnect from "@/lib/dbconnect";
 import { User } from "next-auth";
 
+
 export async function POST(req: Request) {
   await dbConnect();
 
@@ -71,9 +72,9 @@ export async function GET(req: Request) {
     );
   }
   const user:User = session?.user as User;
-  const userId = user._id
+  const username = user.userName
  try {
-     const foundUSer =await usermodel.findById(userId)
+     const foundUSer =await usermodel.findById(username)
      if (!foundUSer) {
        return Response.json({
            success: false,
@@ -92,3 +93,50 @@ export async function GET(req: Request) {
       },{status:500});
  }
 }
+
+// export async function GET(req: NextRequest) {
+//   await dbConnect();
+//   const session = await getServerSession(authOptions);
+
+//   if (!session || !session.user) {
+//     return new NextResponse(
+//       JSON.stringify({
+//         success: false,
+//         message: 'Not Authenticated',
+//       }),
+//       { status: 401 }
+//     );
+//   }
+
+//   const user = session.user as User;
+//   const userId = user._id;
+
+//   try {
+//     const foundUser = await usermodel.findById(userId);
+//     if (!foundUser) {
+//       return new NextResponse(
+//         JSON.stringify({
+//           success: false,
+//           message: 'Failed to find the user',
+//         }),
+//         { status: 404 }
+//       );
+//     }
+//     return new NextResponse(
+//       JSON.stringify({
+//         success: true,
+//         isAcceptingMessages: foundUser.isAcceptingMessages,
+//       }),
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error('Error in finding user:', error);
+//     return new NextResponse(
+//       JSON.stringify({
+//         success: false,
+//         message: 'Error in finding user',
+//       }),
+//       { status: 500 }
+//     );
+//   }
+// }

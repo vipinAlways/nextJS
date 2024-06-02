@@ -15,6 +15,7 @@ import { Form, FormControl,FormField, FormItem, FormLabel, FormMessage } from "@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import dynamic from "next/dynamic";
 
 
 const page = () => {
@@ -139,7 +140,7 @@ const page = () => {
                   <FormItem>
                     <FormLabel>password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your password" {...field} />
+                      <Input placeholder="Enter your password" {...field} type="password" />
                     </FormControl>
                       
                    <FormMessage />
@@ -174,4 +175,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default dynamic(()=>Promise.resolve(page),{ssr:false})

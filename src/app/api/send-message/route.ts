@@ -6,17 +6,17 @@ import { Message } from "@/Models/User.model";
 export async function POST(req: Request) {
   await dbConnect();
 
-  const { userName, content } = await req.json();
+  const { email, content } = await req.json();
 
   try {
-    const user = await usermodel.findOne({ userName });
+    const user = await usermodel.findOne({ email });
     if (!user) {
         return Response.json({
             success: false,
             message: "user not found",
           },{status:404});
     }
-    //is acccpetinf the messages
+    //is acccpeting the messages
 
     if (!user.isAcceptingMessages) {
         return Response.json({
